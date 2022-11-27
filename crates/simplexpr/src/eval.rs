@@ -375,7 +375,7 @@ fn call_expr_function(name: &str, args: Vec<DynVal>) -> Result<DynVal, EvalError
                         return Ok(result.into());
                     }
                 }
-                Err(EvalError::FunctionError("range_select", format!("No entry matched value: {value}")))
+                Ok("null".into())
             }
             _ => Err(EvalError::WrongArgCount(name.to_string())),
         },
@@ -386,6 +386,7 @@ fn call_expr_function(name: &str, args: Vec<DynVal>) -> Result<DynVal, EvalError
 
 #[cfg(test)]
 mod tests {
+    use super::EvalError;
     use crate::dynval::DynVal;
 
     macro_rules! evals_as {
@@ -436,5 +437,9 @@ mod tests {
         lazy_evaluation_and(r#"false && "null".test"#) => Ok(DynVal::from(false)),
         lazy_evaluation_or(r#"true || "null".test"#) => Ok(DynVal::from(true)),
         lazy_evaluation_elvis(r#""test"?: "null".test"#) => Ok(DynVal::from("test")),
+        range_select_inclusive(r#"range_select(2, [["0..1", 1], ["1..=2", 2]])"#) => Ok(2.into()),
+        range_select_exclusive(r#"range_select(2, [["0..1", 1], ["1..=2", 2]])"#) => Ok(2.into()),
+        range_select_unbound(r#"range_select(10, [["..", 1]])"#) => Ok(1.into()),
+        range_select_no_match(r#"range_select(10, [["..2", 1] ])"#) => Ok("null".into())
     }
 }
