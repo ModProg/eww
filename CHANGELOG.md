@@ -8,7 +8,12 @@ All notable changes to eww will be listed here, starting at changes since versio
 ### Features
 - Add support for safe access (`?.`) in simplexpr (By: oldwomanjosiah)
 - Allow floating-point numbers in percentages for window-geometry
+<<<<<<< HEAD
 - Made `and`, `or` and `?:` lazily evaluated in simplexpr (By: ModProg)
+||||||| 7a0e1b7
+=======
+- Add support for safe access with index (`?.[n]`) (By: ModProg)
+>>>>>>> safe_access_index
 
 ## [0.4.0] (04.09.2022)
 

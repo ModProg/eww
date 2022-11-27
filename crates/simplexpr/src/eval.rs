@@ -441,6 +441,8 @@ mod tests {
         safe_access_to_missing(r#"{ "a": { "b": 2 } }.b?.b"#) => Ok(DynVal::from(&serde_json::Value::Null)),
         safe_access_to_empty(r#"""?.test"#) => Ok(DynVal::from(&serde_json::Value::Null)),
         safe_access_to_empty_json_string(r#"'""'?.test"#) => Ok(DynVal::from(&serde_json::Value::Null)),
+        safe_access_index_to_existing(r#"[1, 2]?.[1]"#) => Ok(DynVal::from(2)),
+        safe_access_index_to_missing(r#""null"?.[1]"#) => Ok(DynVal::from(&serde_json::Value::Null)),
         normal_access_to_existing(r#"{ "a": { "b": 2 } }.a.b"#) => Ok(DynVal::from(2)),
         normal_access_to_missing(r#"{ "a": { "b": 2 } }.b.b"#) => Err(super::EvalError::CannotIndex("null".to_string())),
         lazy_evaluation_and(r#"false && "null".test"#) => Ok(DynVal::from(false)),
